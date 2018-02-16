@@ -1,0 +1,83 @@
+@mixin css3-prefix($property, $value) {
+  -webkit-#{$property}: #{$value};
+   -khtml-#{$property}: #{$value};
+     -moz-#{$property}: #{$value};
+      -ms-#{$property}: #{$value};
+       -o-#{$property}: #{$value};
+          #{$property}: #{$value};
+}
+
+
+@mixin transition($properties...) {
+  @if length($properties) >= 1 {
+    @include css3-prefix('transition', $properties);
+  }
+  @else {
+    @include css3-prefix('transition',  "all 0.2s ease-in-out 0s");
+  }
+}
+
+@mixin transform($properties...) {
+  @if length($properties) >= 1 {
+    @include css3-prefix('transform', $properties);
+  }
+}
+
+@mixin transform-origin($properties...) {
+  @if length($properties) >= 1 {
+    @include css3-prefix('transform-origin', $properties);
+  }
+}
+
+
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
+
+@mixin vertical-align($position: relative) {
+  position: $position;
+  top: 50%;
+  @include css3-prefix(transform, translateY(-50%));
+}
+// @include vertical-align();
+
+
+@mixin position ($position: relative, $coordinates: 0 0 0 0) {
+    @if type-of($position) == list {
+        $coordinates: $position;
+        $position: relative;
+    }
+
+    $top: nth($coordinates, 1);
+    $right: nth($coordinates, 2);
+    $bottom: nth($coordinates, 3);
+    $left: nth($coordinates, 4);
+
+    position: $position;
+
+    @if $top == auto {
+        top: $top;
+    }
+    @else if not(unitless($top)) {
+        top: $top;
+    }
+    @if $right == auto {
+        right: $right;
+    }
+    @else if not(unitless($right)) {
+        right: $right;
+    }
+    @if $bottom == auto {
+        bottom: $bottom;
+    }
+    @else if not(unitless($bottom)) {
+        bottom: $bottom;
+    }
+    @if $left == auto {
+        left: $left;
+    }
+    @else if not(unitless($left)) {
+        left: $left;
+    }
+}
