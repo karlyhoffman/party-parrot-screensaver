@@ -87,7 +87,7 @@ gulp.task('js',function(){
     .pipe(jshint('.jshintrc'))
     //.pipe(jshint.reporter('jshint-stylish'))
     .pipe(header(banner, { package : package }))
-    //.pipe(gulp.dest('app/assets/js'))
+    .pipe(gulp.dest('app/assets/js'))
     .pipe(uglify())
     .pipe(header(banner, { package : package }))
     .pipe(rename({ suffix: '.min' }))

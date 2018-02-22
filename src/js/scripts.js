@@ -38,8 +38,8 @@
 		        this.height,                                  // image height
 		        0,                                            // canvas x-coordinates
 		        0,                                            // canvas y-coordinates
-		        (this.width * 1) / this.frames,             // scale image
-		        (this.height * 1)                           // scale image
+		        (this.width * 1) / this.frames,               // scale image
+		        (this.height * 1)                             // scale image
         );
       }
     }
