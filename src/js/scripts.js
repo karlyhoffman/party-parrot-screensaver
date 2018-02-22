@@ -2,44 +2,55 @@
   'use strict';
   $(function () {
 
-    var img_obj = {
-      'source': null,
-      'current': 0,
-      'total_frames': 10,
-      'width': 47,
-      'height': 47
-    };
+    var canvas = document.getElementById('screensaver');
+    var context = canvas.getContext("2d");
 
-    var img = new Image();
-    img.onload = function () { // Triggered when image has finished loading.
-        img_obj.source = img;  // we set the image source for our object.
+    var parrotSprite = new Image();
+    parrotSprite.src = "assets/img/parrot-x-sm.png";
+
+    var partyParrot = {
+      parrot: this,
+      width: 640,
+  		height: 64,
+  		image: parrotSprite,
+  		frames: 10,
+      speed: 3,
+      frameIndex: 0,
+      count: 0,
+      animateParrot: function(parrot) {
+        this.count += 1;
+        if (this.count > this.speed) {
+          this.count = 0;
+          if (this.frameIndex < this.frames - 1) {
+            this.frameIndex += 1;
+          } else {
+            this.frameIndex = 0;
+          };
+        };
+      },
+      renderParrot: function(parrot) {
+        context.clearRect(0, 0, this.width, this.height);
+        context.drawImage(
+		        this.image,
+		        this.frameIndex * this.width / this.frames,   // frame x-position
+		        0,                                            // frame y-position
+		        this.width / this.frames,                     // image width
+		        this.height,                                  // image height
+		        0,                                            // canvas x-coordinates
+		        0,                                            // canvas y-coordinates
+		        (this.width * 1) / this.frames,             // scale image
+		        (this.height * 1)                           // scale image
+        );
+      }
     }
-    img.src = 'assets/img/parrot-sprite-x@1x.png'; // contains an image of size 256x16
-                                  // with 16 frames of size 16x16
 
-    function draw_anim(context, x, y, iobj) { // context is the canvas 2d context.
-        if (iobj.source != null)
-            context.drawImage(iobj.source, iobj.current * iobj.width, 0,
-                              iobj.width, iobj.height,
-                              x, y, iobj.width, iobj.height);
-        iobj.current = (iobj.current + 1) % iobj.total_frames;
-                       // incrementing the current frame and assuring animation loop
+    function party() {
+      window.requestAnimationFrame(party);
+      partyParrot.animateParrot();
+      partyParrot.renderParrot();
     }
 
-    function on_body_load() {
-        var canvas = document.getElementById('screensaver');
-        var context = canvas.getContext("2d");
-
-        setInterval((function (c, i) {
-                    return function () {
-                        context.clearRect(0, 0, canvas.width, canvas.height);
-                        draw_anim(c, 10, 10, i);
-                    };
-        })(context, img_obj), 100);
-    };
-
-    on_body_load();
-
+    parrotSprite.addEventListener("load", party);
 
   });
 })(jQuery, window, document);
