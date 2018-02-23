@@ -13,6 +13,12 @@
     var canvas = document.getElementById('screensaver');
     var context = canvas.getContext("2d");
 
+    function resizeCanvas() { // responsive canvas
+      context.canvas.width = innerWidth;
+      context.canvas.height = innerHeight;
+    }
+    resizeCanvas();
+
     var parrotSprite = new Image();
     parrotSprite.src = "assets/img/parrot-x-sm.png";
 
@@ -37,7 +43,7 @@
         };
       },
       renderParrot: function(parrot) {
-        context.clearRect(0, 0, this.width, this.height);
+        context.clearRect(0, 0, canvas.width, canvas.height);
         context.drawImage(
 		        this.image,
 		        this.frameIndex * this.width / this.frames,   // frame x-position
@@ -46,8 +52,8 @@
 		        this.height,                                  // image height
 		        0,                                            // canvas x-coordinates
 		        0,                                            // canvas y-coordinates
-		        (this.width * 1) / this.frames,               // scale image
-		        (this.height * 1)                             // scale image
+            this.width / this.frames,                     // scale image x
+            this.height                                   // scale image y
         );
       }
     }
@@ -59,6 +65,10 @@
     }
 
     parrotSprite.addEventListener("load", party);
+
+    $(window).on( "resize", function() {
+        resizeCanvas();
+    });
 
   });
 })(jQuery, window, document);
