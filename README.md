@@ -1,5 +1,6 @@
 # Party Parrot Screensaver
 ![Party Parrot Demo](https://media.giphy.com/media/1inOT5I18QaDmdrVek/giphy.gif)
+
 [View Demo](https://codepen.io/karlyhoffman/full/jZmwdQ/)
 
 ## Project Description:
