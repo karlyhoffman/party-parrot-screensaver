@@ -32,12 +32,13 @@ window.addEventListener('load', function() {
       return image;
     };
 
-    var smallParrot = screensaverImg("assets/img/parrot-x-sm.png", 640, 64);
-    var mediumParrot = screensaverImg("assets/img/parrot-x-md.png", 960, 96);
-    var bigParrot = screensaverImg("assets/img/parrot-x-lg.png", 1280, 128);
+    var smParrotImg = screensaverImg("assets/img/parrot-x-sm.png", 640, 64);
+    var mdParrotImg = screensaverImg("assets/img/parrot-x-md.png", 960, 96);
+    var lgParrotImg = screensaverImg("assets/img/parrot-x-lg.png", 1280, 128);
 
+    var partyAnimals = [];
 
-    /* Image Constructor */
+    /* Screensaver Image Constructor */
     function NewPartyParrot(image, startingXpos, startingYpos, speed, headBobbSpeed) {
       this.image = image;
       this.width = image.width;
@@ -51,8 +52,9 @@ window.addEventListener('load', function() {
       this.frameIndex = 0;
       this.count = 0;
 
+      partyAnimals.push(this);
+
       this.renderParrot = function() {
-        context.clearRect(0, 0, canvas.width, canvas.height);
         context.drawImage(
           this.image,
           this.frameIndex * this.width / this.frames,   // frame x-position
@@ -66,7 +68,7 @@ window.addEventListener('load', function() {
         );
       };
 
-      this.animateParrot = function() {
+      this.spriteAnimation = function() {
         this.count += 1;
         if (this.count > this.headBobbingSpeed) {
           this.count = 0;
@@ -96,20 +98,30 @@ window.addEventListener('load', function() {
         };
       };
 
-      this.party = function() {
-        window.requestAnimationFrame(this.party.bind(this));
+      this.animate = function() {
         this.renderParrot();
-        this.animateParrot();
+        this.spriteAnimation();
         this.moveParrot();
       }
+
+      // this.animate when images load
+      this.party = function() {
+        this.image.onload = this.animate();
+      };
     };
 
 
-    /* Create Instance */
-    var partyAnimal = new NewPartyParrot(mediumParrot, 0, 0, 4, 3);
+    /* Create Instances   =   (image, startingXpos, startingYpos, speed/direction, headBobbSpeed) */
+    var smallParrot = new NewPartyParrot(smParrotImg, 400, 50, -1, 5);
+    var mediumParrot = new NewPartyParrot(mdParrotImg, 0, 0, 2, 3);
+    var bigParrot = new NewPartyParrot(lgParrotImg, 1000, 0, 4, 2);
 
-    mediumParrot.onload = function() {
-      partyAnimal.party();
-    };
-
+    function partyParrots() { // animate each instance
+    	context.clearRect(0, 0, canvas.width, canvas.height);
+      partyAnimals.forEach(function(image) {
+        image.party();
+      });
+      window.requestAnimationFrame(partyParrots);
+    }
+    partyParrots();
 });
