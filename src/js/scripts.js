@@ -1,5 +1,6 @@
 window.addEventListener('load', function() {
 
+    /* Create Canvas */
     var canvas = document.getElementById('screensaver');
     var context = canvas.getContext("2d");
 
@@ -9,29 +10,55 @@ window.addEventListener('load', function() {
     }
     resizeCanvas();
 
-    var parrotSM = new Image();
-    parrotSM.src = "assets/img/parrot-x-sm.png";
+    window.addEventListener('resize', function() {
+      resizeCanvas();
+    });
 
-    var parrotMD = new Image();
-    parrotMD.src = "assets/img/parrot-x-md.png";
 
-    var parrotLG = new Image();
-    parrotLG.src = "assets/img/parrot-x-lg.png";
+    /* Create Screensaver Images */
+    function screensaverImg(imgSrc, imgWidth, imgHeight) {
+      var image = new Image();
+      image.src = imgSrc;
+      image.width = imgWidth;
+      image.height = imgHeight;
+      return image;
+    };
 
-    var partyParrot = {
-      parrot: this,
-      width: 1280,
-  		height: 128,
-  		image: parrotLG,
-  		frames: 10,
-      xCoor: 0,               // starting x coordinate
-      yCoor: 0,               // staring y coordinate
-      xDirection: 3,          // x speed
-      yDirection: 3,          // y speed
-      headBobbingSpeed: 3,    // lower = faster, higher = slower
-      frameIndex: 0,
-      count: 0,
-      animateParrot: function(parrot) {
+    var smallParrot = screensaverImg("assets/img/parrot-x-sm.png", 640, 64);
+    var mediumParrot = screensaverImg("assets/img/parrot-x-md.png", 960, 96);
+    var bigParrot = screensaverImg("assets/img/parrot-x-lg.png", 1280, 128);
+
+
+    /* Image Constructor */
+    function NewPartyParrot(image, startingXpos, startingYpos, speed, headBobbSpeed) {
+      this.image = image;
+      this.width = image.width;
+      this.height = image.height;
+      this.frames = 10;
+      this.xCoor = startingXpos;                // starting x coordinate
+      this.yCoor = startingYpos;                // staring y coordinate
+      this.xDirection = speed;                  // x speed
+      this.yDirection = speed;                  // y speed
+      this.headBobbingSpeed = headBobbSpeed;    // lower = faster, higher = slower
+      this.frameIndex = 0;
+      this.count = 0;
+
+      this.renderParrot = function() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(
+          this.image,
+          this.frameIndex * this.width / this.frames,   // frame x-position
+          0,                                            // frame y-position
+          this.width / this.frames,                     // image width
+          this.height,                                  // image height
+          this.xCoor,                                   // canvas x-coordinates
+          this.yCoor,                                   // canvas y-coordinates
+          this.width / this.frames,                     // scale image x
+          this.height                                   // scale image y
+        );
+      };
+
+      this.animateParrot = function() {
         this.count += 1;
         if (this.count > this.headBobbingSpeed) {
           this.count = 0;
@@ -41,22 +68,9 @@ window.addEventListener('load', function() {
             this.frameIndex = 0;
           };
         };
-      },
-      renderParrot: function(parrot) {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(
-		        this.image,
-		        this.frameIndex * this.width / this.frames,   // frame x-position
-		        0,                                            // frame y-position
-		        this.width / this.frames,                     // image width
-		        this.height,                                  // image height
-		        this.xCoor,                                   // canvas x-coordinates
-		        this.yCoor,                                   // canvas y-coordinates
-            this.width / this.frames,                     // scale image x
-            this.height                                   // scale image y
-        );
-      },
-      moveParrot: function(parrot) {
+      };
+
+      this.moveParrot = function() {
         // check x bounds
         if ( this.xCoor + this.height < canvas.width && this.xCoor > -(this.height * 0.1) ) {
           this.xCoor += this.xDirection; // keep going same direction
@@ -72,20 +86,22 @@ window.addEventListener('load', function() {
           this.yDirection = this.yDirection * -1;
           this.yCoor += this.yDirection;
         };
+      };
+
+      this.party = function() {
+        window.requestAnimationFrame(this.party.bind(this));
+        this.renderParrot();
+        this.animateParrot();
+        this.moveParrot();
       }
     };
 
-    function party() {
-      window.requestAnimationFrame(party);
-      partyParrot.animateParrot();
-      partyParrot.renderParrot();
-      partyParrot.moveParrot();
+
+    /* Create Instance */
+    var partyAnimal = new NewPartyParrot(mediumParrot, 0, 0, 4, 3);
+
+    mediumParrot.onload = function() {
+      partyAnimal.party();
     };
-
-    parrotLG.addEventListener("load", party);
-
-    window.addEventListener('resize', function() {
-      resizeCanvas();
-    });
 
 });
