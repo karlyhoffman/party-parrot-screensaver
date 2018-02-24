@@ -9,14 +9,20 @@ window.addEventListener('load', function() {
     }
     resizeCanvas();
 
-    var parrotSprite = new Image();
-    parrotSprite.src = "assets/img/parrot-x-sm.png";
+    var parrotSM = new Image();
+    parrotSM.src = "assets/img/parrot-x-sm.png";
+
+    var parrotMD = new Image();
+    parrotMD.src = "assets/img/parrot-x-md.png";
+
+    var parrotLG = new Image();
+    parrotLG.src = "assets/img/parrot-x-lg.png";
 
     var partyParrot = {
       parrot: this,
-      width: 640,
-  		height: 64,
-  		image: parrotSprite,
+      width: 1280,
+  		height: 128,
+  		image: parrotLG,
   		frames: 10,
       xCoor: 0,               // starting x coordinate
       yCoor: 0,               // staring y coordinate
@@ -76,7 +82,7 @@ window.addEventListener('load', function() {
       partyParrot.moveParrot();
     };
 
-    parrotSprite.addEventListener("load", party);
+    parrotLG.addEventListener("load", party);
 
     window.addEventListener('resize', function() {
       resizeCanvas();
