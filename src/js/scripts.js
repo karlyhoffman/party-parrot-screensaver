@@ -1,6 +1,4 @@
-(function ($, window, document, undefined) {
-  'use strict';
-  $(function () {
+window.addEventListener('load', function() {
 
     var canvas = document.getElementById('screensaver');
     var context = canvas.getContext("2d");
@@ -20,11 +18,11 @@
   		height: 64,
   		image: parrotSprite,
   		frames: 10,
-      xCoor: innerWidth / 2,    // center x coordinate
-      yCoor: innerHeight / 2,   // center y coordinate
-      xDirection: 3,            // x speed
-      yDirection: 3,            // y speed
-      headBobbingSpeed: 3,      // lower = faster, higher = slower
+      xCoor: 0,               // starting x coordinate
+      yCoor: 0,               // staring y coordinate
+      xDirection: 3,          // x speed
+      yDirection: 3,          // y speed
+      headBobbingSpeed: 3,    // lower = faster, higher = slower
       frameIndex: 0,
       count: 0,
       animateParrot: function(parrot) {
@@ -59,7 +57,7 @@
         } else { // change directions
           this.xDirection = this.xDirection * -1;
           this.xCoor += this.xDirection;
-        }
+        };
 
         // check y bounds
         if ( this.yCoor + this.height < canvas.height && this.yCoor > -(this.height * 0.5) ) {
@@ -67,16 +65,16 @@
         } else { // change directions
           this.yDirection = this.yDirection * -1;
           this.yCoor += this.yDirection;
-        }
+        };
       }
-    }
+    };
 
     function party() {
       window.requestAnimationFrame(party);
       partyParrot.animateParrot();
       partyParrot.renderParrot();
       partyParrot.moveParrot();
-    }
+    };
 
     parrotSprite.addEventListener("load", party);
 
@@ -84,5 +82,4 @@
       resizeCanvas();
     });
 
-  });
-})(jQuery, window, document);
+});
