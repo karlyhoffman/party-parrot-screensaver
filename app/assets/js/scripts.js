@@ -28,12 +28,16 @@
   		height: 64,
   		image: parrotSprite,
   		frames: 10,
-      speed: 3,
+      xCoor: innerWidth / 2,    // center x coordinate
+      yCoor: innerHeight / 2,   // center y coordinate
+      xDirection: 3,            // x speed
+      yDirection: 3,            // y speed
+      headBobbingSpeed: 3,      // lower = faster, higher = slower
       frameIndex: 0,
       count: 0,
       animateParrot: function(parrot) {
         this.count += 1;
-        if (this.count > this.speed) {
+        if (this.count > this.headBobbingSpeed) {
           this.count = 0;
           if (this.frameIndex < this.frames - 1) {
             this.frameIndex += 1;
@@ -50,11 +54,28 @@
 		        0,                                            // frame y-position
 		        this.width / this.frames,                     // image width
 		        this.height,                                  // image height
-		        0,                                            // canvas x-coordinates
-		        0,                                            // canvas y-coordinates
+		        this.xCoor,                                   // canvas x-coordinates
+		        this.yCoor,                                   // canvas y-coordinates
             this.width / this.frames,                     // scale image x
             this.height                                   // scale image y
         );
+      },
+      moveParrot: function(parrot) {
+        // check x bounds
+        if ( this.xCoor + this.height < canvas.width && this.xCoor > -(this.height * 0.1) ) {
+          this.xCoor += this.xDirection; // keep going same direction
+        } else { // change directions
+          this.xDirection = this.xDirection * -1;
+          this.xCoor += this.xDirection;
+        }
+
+        // check y bounds
+        if ( this.yCoor + this.height < canvas.height && this.yCoor > -(this.height * 0.5) ) {
+          this.yCoor += this.yDirection; // keep going same direction
+        } else { // change directions
+          this.yDirection = this.yDirection * -1;
+          this.yCoor += this.yDirection;
+        }
       }
     }
 
@@ -62,12 +83,13 @@
       window.requestAnimationFrame(party);
       partyParrot.animateParrot();
       partyParrot.renderParrot();
+      partyParrot.moveParrot();
     }
 
     parrotSprite.addEventListener("load", party);
 
-    $(window).on( "resize", function() {
-        resizeCanvas();
+    window.addEventListener('resize', function() {
+      resizeCanvas();
     });
 
   });
