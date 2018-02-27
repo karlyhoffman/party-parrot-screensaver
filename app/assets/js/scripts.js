@@ -24,17 +24,18 @@ window.addEventListener('load', function() {
 
 
     /* Create Screensaver Images */
-    function screensaverImg(imgSrc, imgWidth, imgHeight) {
+    function screensaverImg(imgSrc, imgWidth, imgHeight, numOfFrames) {
       var image = new Image();
       image.src = imgSrc;
       image.width = imgWidth;
       image.height = imgHeight;
+      image.frames = numOfFrames;
       return image;
     };
 
-    var smParrotImg = screensaverImg("assets/img/parrot-x-sm.png", 640, 64);
-    var mdParrotImg = screensaverImg("assets/img/parrot-x-md.png", 960, 96);
-    var lgParrotImg = screensaverImg("assets/img/parrot-x-lg.png", 1280, 128);
+    var smParrotImg = screensaverImg("assets/img/parrot-x-sm.png", 640, 47, 10);
+    var mdParrotImg = screensaverImg("assets/img/parrot-x-md.png", 960, 72, 10);
+    var lgParrotImg = screensaverImg("assets/img/parrot-x-lg.png", 1280, 93, 10);
 
     var partyAnimals = [];
 
@@ -43,7 +44,7 @@ window.addEventListener('load', function() {
       this.image = image;
       this.width = image.width;
       this.height = image.height;
-      this.frames = 10;
+      this.frames = image.frames;
       this.xCoor = startingXpos;                // starting x coordinate
       this.yCoor = startingYpos;                // staring y coordinate
       this.xDirection = speed;                  // x speed
@@ -82,7 +83,7 @@ window.addEventListener('load', function() {
 
       this.moveParrot = function() {
         // check x bounds
-        if ( this.xCoor + this.height < canvas.width && this.xCoor > -(this.height * 0.1) ) {
+        if ( this.xCoor + this.height < canvas.width && this.xCoor >= 0 ) {
           this.xCoor += this.xDirection; // keep going same direction
         } else { // change directions
           this.xDirection = this.xDirection * -1;
@@ -90,7 +91,7 @@ window.addEventListener('load', function() {
         };
 
         // check y bounds
-        if ( this.yCoor + this.height < canvas.height && this.yCoor > -(this.height * 0.5) ) {
+        if ( this.yCoor + this.height < canvas.height && this.yCoor >= 0 ) {
           this.yCoor += this.yDirection; // keep going same direction
         } else { // change directions
           this.yDirection = this.yDirection * -1;
