@@ -1,7 +1,7 @@
 # Party Parrot Screensaver
 ![Party Parrot Demo](https://media.giphy.com/media/1inOT5I18QaDmdrVek/giphy.gif)
 
-[View Demo](https://codepen.io/karlyhoffman/full/jZmwdQ/)
+[View Demo](https://codepen.io/karlyhoffman/pen/jZmwdQ)
 
 ## Project Description:
 A responsive canvas animation of [Party Parrot](http://cultofthepartyparrot.com/) in the classic DVD screensaver.
