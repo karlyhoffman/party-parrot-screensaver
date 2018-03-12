@@ -44,7 +44,7 @@ window.addEventListener('load', function() {
       this.image = image;
       this.width = image.width;
       this.height = image.height;
-      this.frames = image.frames;
+      image.frames === undefined ? this.frames = 1 : this.frames = image.frames;
       this.xCoor = startingXpos;                // starting x coordinate
       this.yCoor = startingYpos;                // staring y coordinate
       this.xDirection = speed;                  // x speed
