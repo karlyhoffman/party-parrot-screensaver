@@ -1,8 +1,8 @@
 window.addEventListener('load', function() {
 
     /* Create Canvas */
-    var canvas = document.getElementById('screensaver');
-    var context = canvas.getContext("2d");
+    const canvas = document.getElementById('screensaver');
+    const context = canvas.getContext("2d");
 
     function resizeCanvas() { // responsive canvas
       context.canvas.width = innerWidth;
@@ -17,7 +17,7 @@ window.addEventListener('load', function() {
 
     /* Create Screensaver Images */
     function screensaverImg(imgSrc, imgWidth, imgHeight, numOfFrames) {
-      var image = new Image();
+      const image = new Image();
       image.src = imgSrc;
       image.width = imgWidth;
       image.height = imgHeight;
@@ -25,11 +25,11 @@ window.addEventListener('load', function() {
       return image;
     };
 
-    var smParrotImg = screensaverImg("assets/img/parrot-x-sm.png", 640, 47, 10);
-    var mdParrotImg = screensaverImg("assets/img/parrot-x-md.png", 960, 72, 10);
-    var lgParrotImg = screensaverImg("assets/img/parrot-x-lg.png", 1280, 93, 10);
+    const smParrotImg = screensaverImg("assets/img/parrot-x-sm.png", 640, 47, 10);
+    const mdParrotImg = screensaverImg("assets/img/parrot-x-md.png", 960, 72, 10);
+    const lgParrotImg = screensaverImg("assets/img/parrot-x-lg.png", 1280, 93, 10);
 
-    var partyAnimals = [];
+    const partyAnimals = [];
 
     /* Screensaver Image Constructor */
     function NewPartyParrot(image, startingXpos, startingYpos, speed, headBobbSpeed) {
@@ -105,9 +105,9 @@ window.addEventListener('load', function() {
 
 
     /* Create Instances   =   (image, startingXpos, startingYpos, speed/direction, headBobbSpeed) */
-    var smallParrot = new NewPartyParrot(smParrotImg, 400, 50, -1, 5);
-    var mediumParrot = new NewPartyParrot(mdParrotImg, 0, 0, 2, 3);
-    var bigParrot = new NewPartyParrot(lgParrotImg, 1000, 0, 4, 2);
+    const smallParrot = new NewPartyParrot(smParrotImg, 400, 50, -1, 5);
+    const mediumParrot = new NewPartyParrot(mdParrotImg, 0, 0, 2, 3);
+    const bigParrot = new NewPartyParrot(lgParrotImg, 1000, 0, 4, 2);
 
     function partyParrots() { // animate each instance
     	context.clearRect(0, 0, canvas.width, canvas.height);
