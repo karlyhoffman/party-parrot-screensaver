@@ -45,7 +45,7 @@ const config = {
   }
 };
 
-var banner = [
+const banner = [
   '/*!\n' +
   ' * <%= package.name %>\n' +
   ' * <%= package.title %>\n' +
@@ -57,7 +57,7 @@ var banner = [
   '\n'
 ].join('');
 
-var onError = function(err){
+const onError = (err) => {
 	notify.onError({
 		title:    "Gulp - Party Parrot",
 		subtitle: "Failure!",
@@ -67,7 +67,7 @@ var onError = function(err){
 	this.emit('end');
 };
 
-gulp.task('css', function () {
+gulp.task('css', ()=> {
     return gulp.src('src/scss/style.scss')
     .pipe(plumber({errorHandler: onError}))
   	.pipe(sourcemaps.init())
@@ -82,7 +82,7 @@ gulp.task('css', function () {
     .pipe(browserSync.reload({stream:true}));
 });
 
-gulp.task('js',function(){
+gulp.task('js', ()=> {
   gulp.src('src/js/*.js')
     .pipe(cache('linting'))
     .pipe(jshint('.jshintrc'))
@@ -98,8 +98,8 @@ gulp.task('js',function(){
 });
 
 //compressing images & handle SVG files
-gulp.task('images', function(tmp) {
-  var src = ['src/assets/img/*.(jpg|png|gif)'];
+gulp.task('images', (tmp)=> {
+  const src = ['src/assets/img/*.(jpg|png|gif)'];
 	gulp.src(src)
 	//prevent pipe breaking caused by errors from gulp plugins
 	.pipe(plumber({errorHandler: onError}))
@@ -107,20 +107,20 @@ gulp.task('images', function(tmp) {
 	.pipe(gulp.dest('app/assets/img'));
 });
 
-gulp.task('browser-sync', function() {
+gulp.task('browser-sync', ()=> {
     browserSync.init(null, config.browserSync);
 });
-gulp.task('bs-reload', function () {
+gulp.task('bs-reload', ()=> {
     browserSync.reload();
 });
 
-gulp.task('access', ['html'], function() {
+gulp.task('access', ['html'], ()=> {
 	return gulp.src('app/**/*.html')
 	.pipe(access());
 });
 
-gulp.task('html', function(){
-  var src = [
+gulp.task('html', ()=> {
+  const src = [
     path.join(paths.templates, '**/*.html')
   ];
 
@@ -140,12 +140,12 @@ gulp.task('html', function(){
 });
 
 
-gulp.task('build', ['html', 'css', 'js'], function(){
+gulp.task('build', ['html', 'css', 'js'], ()=> {
 	return true;
 });
 
 
-gulp.task('default', ['build', 'browser-sync'], function () {
+gulp.task('default', ['build', 'browser-sync'], ()=> {
 	gulp.watch("src/scss/*/*.scss", ['css']);
 	gulp.watch("src/js/*.js", ['js']);
   gulp.watch(["src/**/*.html"], ['html']);
